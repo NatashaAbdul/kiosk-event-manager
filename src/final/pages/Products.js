@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 const Products = () => {
   const [company, setCompany] = useState([]);
 

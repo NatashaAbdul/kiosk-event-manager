@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const About = () => {
   const [company, setCompany] = useState([]);
+  const [totalAttendees, setTotalAttendees] = useState(0);
 
   useEffect(() => {
     fetchCompany();
@@ -14,6 +15,7 @@ const About = () => {
       );
       const data = await response.json();
       setCompany(data);
+      setTotalAttendees(data.length);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -36,7 +38,13 @@ const About = () => {
       console.error("Error deleting registration:", error);
     }
   };
-
+  const dashboardStyle = {
+    backgroundColor: "#4CAF50", // Green color
+    padding: "15px",
+    borderRadius: "10px", // Curved corners
+    marginBottom: "15px",
+    color: "white",
+  };
   const tableStyle = {
     borderCollapse: "collapse",
     width: "100%",
@@ -68,15 +76,15 @@ const About = () => {
   return (
     <section className="section">
       <h2>Registration</h2>
-
+      <div style={dashboardStyle}>
+        <h3>Total Registrant: {totalAttendees}</h3>
+      </div>
       <table style={tableStyle}>
         <thead>
           <tr>
-            <th style={thStyle}>UID</th>
+            <th style={thStyle}>Registration Number</th>
             <th style={thStyle}>Person</th>
             <th style={thStyle}>Company</th>
-            <th style={thStyle}>Lucky</th>
-            <th style={thStyle}>Table</th>
             <th style={thStyle}>Actions</th>
           </tr>
         </thead>
@@ -86,8 +94,6 @@ const About = () => {
               <td style={tdStyle}>{c.uid}</td>
               <td style={tdStyle}>{c.person}</td>
               <td style={tdStyle}>{c.company}</td>
-              <td style={tdStyle}>{c.lucky}</td>
-              <td style={tdStyle}>{c.table}</td>
               <td style={tdStyle}>
                 <button
                   style={buttonStyle}

@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
 import * as XLSX from "xlsx";
+import { v4 as uuidv4 } from 'uuid';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     company: "",
-    table: "",
     person: "",
-    lucky: "",
     // uid: "",
   });
 
@@ -22,10 +21,8 @@ const RegistrationForm = () => {
     e.preventDefault();
     var formattedData = {
       company: formData.company,
-      table: formData.table,
       person: formData.person,
-      lucky: formData.lucky,
-      uid: formData.lucky,
+      uid: uuidv4(),
     }
     console.log(formattedData);
     try {
@@ -45,9 +42,7 @@ const RegistrationForm = () => {
         // Optionally, clear the form after successful submission
         setFormData({
           company: "",
-          table: "",
           person: "",
-          lucky: "",
           // uid: "",
         });
       } else {
@@ -66,20 +61,26 @@ const RegistrationForm = () => {
       const workbook = XLSX.read(data, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
+      var status = 0;
       for (let row of worksheet) {
         // Assuming your Excel columns are named 'Company', 'Table', 'Person', 'Lucky', 'UID'
         const formDataFromExcel = {
           company: row.Company,
-          table: row.Table,
           person: row.Person,
-          lucky: row.Lucky,
-          uid: row.Lucky,
+          uid: uuidv4(),
         };
 
         // Send data to the server
-        await handleExcelData(formDataFromExcel);
-
+        const result = await handleExcelData(formDataFromExcel);
+        console.log(result);
+        if (result == "Success") {
+          status = 1
+        }
+      }
+      if (status == 1) {
+        alert("Registration successful!");
+      } else {
+        alert("Registration unsuccessful!");
       }
     };
     reader.readAsArrayBuffer(file);
@@ -100,12 +101,13 @@ const RegistrationForm = () => {
 
       if (!response.ok) {
         console.error("Error updating record", formData);
+        return "Failed"
       } else {
         console.log(response)
         // Clear the file input after processing
         fileInputRef.current.value = null;
-        alert("Registration successful!");
-
+        // alert("Registration successful!");
+        return "Success"
       }
     } catch (error) {
       console.error("Error processing Excel data:", error);
@@ -155,15 +157,6 @@ const RegistrationForm = () => {
       />
       <input
         type="text"
-        name="table"
-        value={formData.table}
-        onChange={handleChange}
-        placeholder="Table"
-        style={inputStyle}
-        required
-      />
-      <input
-        type="text"
         name="person"
         value={formData.person}
         onChange={handleChange}
@@ -173,22 +166,13 @@ const RegistrationForm = () => {
       />
       <input
         type="text"
-        name="lucky"
-        value={formData.lucky}
-        onChange={handleChange}
-        placeholder="Lucky Draw Number"
-        style={inputStyle}
-        required
-      />
-      {/* <input
-        type="text"
         name="uid"
         value={formData.uid}
         onChange={handleChange}
-        placeholder="UID should be same as lucky"
+        placeholder="Registration Number"
         style={inputStyle}
         required
-      /> */}
+      />
       <button type="submit" style={buttonStyle}>
         Register
       </button>

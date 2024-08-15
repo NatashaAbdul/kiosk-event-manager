@@ -93,11 +93,9 @@ const Home = () => {
       <table style={tableStyle}>
         <thead>
           <tr>
-            <th style={thStyle}>UID</th>
+            <th style={thStyle}>Registration Number</th>
             <th style={thStyle}>Person</th>
             <th style={thStyle}>Company</th>
-            <th style={thStyle}>Lucky</th>
-            <th style={thStyle}>Table</th>
             <th style={thStyle}>CheckIn</th>
             <th style={thStyle}>Actions</th>
           </tr>
@@ -108,8 +106,6 @@ const Home = () => {
               <td style={tdStyle}>{a.uid}</td>
               <td style={tdStyle}>{a.person}</td>
               <td style={tdStyle}>{a.company}</td>
-              <td style={tdStyle}>{a.lucky}</td>
-              <td style={tdStyle}>{a.table}</td>
               <td style={tdStyle}>{a.checkInTime}</td>
               <td style={tdStyle}>
                 <button
