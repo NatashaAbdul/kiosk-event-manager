@@ -164,7 +164,7 @@ const RegistrationForm = () => {
         style={inputStyle}
         required
       />
-      <input
+      {/* <input
         type="text"
         name="uid"
         value={formData.uid}
@@ -172,7 +172,7 @@ const RegistrationForm = () => {
         placeholder="Registration Number"
         style={inputStyle}
         required
-      />
+      /> */}
       <button type="submit" style={buttonStyle}>
         Register
       </button>
